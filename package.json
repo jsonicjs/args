@@ -1,12 +1,12 @@
 {
-  "name": "@jsonic/csv",
-  "version": "0.4.3",
-  "description": "This plugin allows the [Jsonic](https://jsonic.senecajs.org) JSON parser to support csv syntax.",
-  "main": "csv.js",
+  "name": "@jsonic/args",
+  "version": "0.0.1",
+  "description": "This plugin allows the [Jsonic](https://jsonic.senecajs.org) JSON parser to parse REPL and command line arguments.",
+  "main": "dist/args.js",
   "type": "commonjs",
-  "browser": "csv.min.js",
-  "types": "csv.d.ts",
-  "homepage": "https://github.com/jsonicjs/csv",
+  "browser": "dist/args.min.js",
+  "types": "dist/args.d.ts",
+  "homepage": "https://github.com/jsonicjs/args",
   "keywords": [
     "pattern",
     "matcher",
@@ -17,7 +17,7 @@
   "author": "Richard Rodger (http://richardrodger.com)",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jsonicjs/csv.git"
+    "url": "git://github.com/jsonicjs/args.git"
   },
   "scripts": {
     "test": "jest --coverage",
@@ -25,7 +25,7 @@
     "test-watch": "jest --coverage --watchAll",
     "watch": "tsc -w -d",
     "doc": "jsonic-doc",
-    "build": "tsc -d && cp csv.js csv.min.js && browserify -o csv.min.js -e csv.js -s @JsonicCsv -im -i assert -p tinyify",
+    "build": "tsc -d && cp args.js args.min.js && browserify -o args.min.js -e args.js -s @JsonicArgs -im -i assert -p tinyify",
     "prettier": "prettier --write --no-semi --single-quote *.ts test/*.js",
     "clean": "rm -rf node_modules yarn.lock package-lock.json",
     "reset": "npm run clean && npm i && npm run build && npm test",
@@ -44,7 +44,6 @@
     "@jsonic/doc": "^0.0.5",
     "@types/jest": "^29.5.3",
     "browserify": "^17.0.0",
-    "csv-spectrum": "^1.0.0",
     "es-jest": "^2.1.0",
     "esbuild": "^0.19.1",
     "jest": "^29.6.2",
