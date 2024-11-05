@@ -24,64 +24,57 @@ const Args = (jsonic, options) => {
         }
         actr.add(pat, { cmd, valid });
     }
-    console.log(actr + '');
+    // console.log(actr + '')
     jsonic.options({
         rule: {
-            start: 'list'
+            start: 'list',
         },
         tokenSet: {
             IGNORE: [null, null, null],
-        }
+        },
     });
     const { SP, ZZ } = jsonic.token;
-    jsonic
-        .rule('list', (rs) => {
-        rs
-            .close([
+    jsonic.rule('list', (rs) => {
+        rs.close([
             {
                 s: [ZZ],
                 c: (r) => r.d === 0,
-                a: operate
-            }
+                a: operate,
+            },
         ]);
     });
-    jsonic
-        .rule('elem', (rs) => {
-        rs
-            .open([], {
+    jsonic.rule('elem', (rs) => {
+        rs.open([], {
             delete: [
-                2 // Array props not supported since conflict with map arg.
-            ]
-        })
-            .close([
+                2, // Array props not supported since conflict with map arg.
+            ],
+        }).close([
             {
                 s: [SP],
                 c: (r) => 1 === r.d,
-                r: 'elem'
-            }
+                r: 'elem',
+            },
         ]);
     });
-    jsonic
-        .rule('pair', (rs) => {
-        rs
-            .close([
+    jsonic.rule('pair', (rs) => {
+        rs.close([
             {
-                s: [SP], b: 1
-            }
+                s: [SP],
+                b: 1,
+            },
         ]);
     });
-    jsonic
-        .rule('map', (rs) => {
-        rs
-            .close([
+    jsonic.rule('map', (rs) => {
+        rs.close([
             {
-                s: [SP], b: 1
-            }
+                s: [SP],
+                b: 1,
+            },
         ]);
     });
-    function operate(_r, ctx) {
+    async function operate(rule, ctx) {
         let args = ctx.root().node;
-        console.log('ARGS', args);
+        // console.log('ARGS', args, 'CTX', ctx)
         let pat = {};
         let argm = {};
         for (let aI = 0; aI < args.length; aI++) {
@@ -92,13 +85,22 @@ const Args = (jsonic, options) => {
                 argm[v] = true;
             }
         }
-        console.log('PAT', pat);
+        // console.log('PAT', pat)
         let cmdspec = actr.find(pat);
-        console.log('CMDPSEC', cmdspec);
+        // console.log('CMDPSEC', pat, cmdspec, ctx.meta)
+        if (null == cmdspec) {
+            let err = new Error('Unknown command');
+            if (ctx.meta.done) {
+                return ctx.meta.done(err);
+            }
+            else {
+                throw err;
+            }
+        }
         let pnames = Object.keys(cmdspec.cmd.pattern);
         let valid = cmdspec.valid;
         let vpos = Object.keys(valid);
-        console.log('VALID', pnames, vpos, valid);
+        // console.log('VALID', pnames, vpos, valid)
         for (let dI = 0; dI < vpos.length; dI++) {
             let pI = vpos[dI];
             let shape = valid[pI];
@@ -106,13 +108,42 @@ const Args = (jsonic, options) => {
             argm[pn] = shape(args[pI]);
         }
         if (cmdspec) {
-            cmdspec.cmd.action(argm, args);
+            try {
+                let res = cmdspec.cmd.action(argm, {
+                    args,
+                    meta: ctx.meta,
+                    rule,
+                    ctx,
+                });
+                if (ctx.meta.done) {
+                    ctx.meta.done(undefined, await res);
+                }
+            }
+            catch (err) {
+                if (ctx.meta.done) {
+                    ctx.meta.done(err);
+                }
+                else {
+                    throw err;
+                }
+            }
         }
     }
+    /*
+    jsonic.export.interpret = async (src: string, meta: any) => {
+      return new Promise((resolve, reject) => {
+        function done(err: any, out: any) {
+          if (err) return reject(err)
+          return resolve(out)
+        }
+        jsonic(src, { ...(meta || {}), done })
+      })
+      }
+      */
 };
 exports.Args = Args;
 // Default option values.
 Args.defaults = {
-    command: []
+    command: [],
 };
 //# sourceMappingURL=args.js.map

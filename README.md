@@ -18,27 +18,7 @@ parser to support args syntax.
 
 <!--START:options-->
 ## Options
-* _comment_: `null` (default: null) - comment
-* _field_
-  * _empty_: `string` (default: ) - empty
-  * _exact_: `boolean` (default: false) - exact
-  * _names_: `any` (default: undefined) - names
-  * _nonameprefix_: `string` (default: field~) - nonameprefix
-  * _separation_: `null` (default: null) - separation
-* _header_: `boolean` (default: true) - header
-* _number_: `null` (default: null) - number
-* _object_: `boolean` (default: true) - object
-* _record_
-  * _empty_: `boolean` (default: false) - empty
-  * _separators_: `null` (default: null) - separators
-* _stream_: `null` (default: null) - stream
-* _strict_: `boolean` (default: true) - strict
-* _string_
-  * _args_: `null` (default: null) - args
-  * _quote_: `string` (default: ") - quote
-* _trim_: `null` (default: null) - trim
-* _value_: `null` (default: null) - value
-
+_None_
 <!--END:options-->
 
 
