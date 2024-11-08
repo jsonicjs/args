@@ -2,7 +2,7 @@
 
 import Util from 'util'
 
-import { Jsonic } from '@jsonic/jsonic-next'
+import { Jsonic } from 'jsonic'
 import { Args } from '..'
 
 describe('args', () => {

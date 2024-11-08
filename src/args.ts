@@ -11,7 +11,7 @@ import {
   Options,
   Lex,
   AltSpec,
-} from '@jsonic/jsonic-next'
+} from 'jsonic'
 
 import { Patrun } from 'patrun'
 import { Gubu, GubuShape } from 'gubu'
